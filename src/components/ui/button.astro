@@ -1,0 +1,89 @@
+---
+import { cn } from '../../lib/utils'
+
+// Define the button variants using a function instead of cva
+function buttonVariants({
+  variant = 'default',
+  size = 'default',
+  className = '',
+}: {
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link'
+  size?: 'default' | 'sm' | 'lg' | 'icon'
+  className?: string
+}) {
+  const baseStyles =
+    'inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 px-2'
+
+  const variantStyles = {
+    default: 'bg-primary text-primary-foreground shadow hover:bg-primary/90 ',
+    destructive:
+      'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+    outline:
+      'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+    secondary:
+      'bg-secondary text-secondary-foreground hover:bg-secondary/80 border',
+    ghost: 'hover:text-accent-foreground',
+    link: 'text-primary underline-offset-4 hover:underline',
+  }
+
+  const sizeStyles = {
+    default: 'h-9 px-4 py-2',
+    sm: 'h-8 rounded-md px-3 text-xs',
+    lg: 'h-10 rounded-md px-8',
+    icon: 'h-9 w-9',
+  }
+
+  return cn(baseStyles, variantStyles[variant], sizeStyles[size], className)
+}
+interface Props {
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link'
+  size?: 'default' | 'sm' | 'lg' | 'icon'
+  class?: string
+  as?: string
+  href?: string
+  type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
+  [key: string]: any // For any other HTML attributes
+}
+
+const {
+  variant = 'default',
+  size = 'default',
+  class: className = '',
+  as = 'button',
+  href,
+  type = 'button',
+  disabled = false,
+  ...rest
+} = Astro.props
+
+const Element = as
+const isLink = as === 'a' || href
+const Tag = isLink ? 'a' : Element
+
+const classes = buttonVariants({ variant, size, className })
+---
+
+{
+  isLink ? (
+    <a href={href} class={classes} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <Tag type={type} class={classes} disabled={disabled} {...rest}>
+      <slot />
+    </Tag>
+  )
+}

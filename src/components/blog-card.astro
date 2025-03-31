@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import Badge from './ui/badge.astro'
+import Button from './ui/button.astro'
+import CardContent from './ui/card-content.astro'
+import Card from './ui/card.astro'
+import { getCollection } from 'astro:content'
+
+interface Props {
+  post: CollectionEntry<'blogs'>
+}
+
+const { post } = Astro.props
+
+const category = (
+  await getCollection(
+    'categories',
+    (entry) => entry.data.id == post.data.category.id
+  )
+).at(0)?.data
+---
+
+<Card>
+  <a href={`/blogs/${category?.handle}/${post.data.handle}`}>
+    {
+      post.data.image && (
+        <img
+          src={post.data.image}
+          alt={post.data.title}
+          class='w-full h-[260px] object-cover rounded-lg'
+        />
+      )
+    }
+    <CardContent>
+      <Badge>{category?.name}</Badge>
+      <h2 class='headline-h3'>{post.data.title}</h2>
+      <Button variant='secondary'>Read more</Button>
+    </CardContent>
+  </a>
+</Card>

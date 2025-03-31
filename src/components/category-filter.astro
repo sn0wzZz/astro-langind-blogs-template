@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content'
+import Button from './ui/button.astro'
+import { cn } from '../lib/utils'
+
+interface Props {
+  class?: string
+}
+
+const currentPath = Astro.url.pathname
+const isAllActive =
+  currentPath === '/blogs' || currentPath.startsWith('/blogs/page/')
+
+const categories = await getCollection('categories')
+
+const sortedCategories = categories.sort((a, b) =>
+  a.data.name.localeCompare(b.data.name)
+)
+
+const allCategories = [
+  {
+    data: {
+      name: 'All',
+      handle: 'all',
+    },
+    isActive: isAllActive,
+  },
+  ...sortedCategories.map((category) => ({
+    data: category.data,
+    isActive: currentPath.includes(`/blogs/${category.data.handle}`),
+  })),
+]
+
+const { class: className = '' } = Astro.props
+---
+
+<div class={cn('flex flex-wrap gap-2 mb-8', className)}>
+  {
+    allCategories.map((category) => (
+      <Button
+        variant={category.isActive ? 'default' : 'outline'}
+        size='sm'
+        href={
+          category.data.handle === 'all'
+            ? '/blogs'
+            : `/blogs/${category.data.handle}`
+        }
+      >
+        {category.data.name}
+      </Button>
+    ))
+  }
+</div>

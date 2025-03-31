@@ -1,0 +1,29 @@
+---
+import { cn } from '../../lib/utils'
+
+interface Props {
+  className?: string
+  src?: string
+  alt?: string
+  fallback?: string
+}
+
+const { className, src, alt, fallback } = Astro.props
+---
+
+<div
+  class={cn(
+    'relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full',
+    className
+  )}
+>
+  {
+    src ? (
+      <img src={src} alt={alt} class='aspect-square h-full w-full' />
+    ) : (
+      <div class='flex h-full w-full items-center justify-center rounded-full bg-muted'>
+        {fallback}
+      </div>
+    )
+  }
+</div>

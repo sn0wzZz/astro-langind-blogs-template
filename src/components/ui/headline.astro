@@ -1,0 +1,14 @@
+---
+interface Props {
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span' | 'div' | 'p'
+  className?: string
+}
+
+const { as: Element = 'span', className = '' } = Astro.props
+---
+
+<Element
+  class={`text-2xl ml-4 relative col-span-full font-bold before:h-2/3 before:w-1.5 before:contents-[""] before:bg-red-400 before:absolute before:-left-3 before:rounded-full before:bottom-1.5 ${className}`}
+>
+  <slot />
+</Element>

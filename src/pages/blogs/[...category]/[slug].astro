@@ -1,0 +1,71 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content'
+import MainLayout from '../../../layouts/main-layout.astro'
+import Badge from '../../../components/ui/badge.astro'
+
+export async function getStaticPaths() {
+  const blogs = await getCollection('blogs')
+  const categories = await getCollection('categories')
+
+  return Promise.all(
+    blogs.map(async (blog) => {
+      const categoryEntry = categories.find(
+        (cat) => cat.data.id === blog.data.category.id
+      )
+
+      if (!categoryEntry) {
+        console.error(`Category not found for blog: ${blog.data.title}`)
+        return null
+      }
+
+      return {
+        params: {
+          category: categoryEntry.data.handle,
+          slug: blog.data.handle,
+        },
+        props: { blog },
+      }
+    })
+  )
+}
+
+interface Props {
+  blog: CollectionEntry<'blogs'>
+}
+
+const { blog } = Astro.props
+const categories = await getCollection('categories')
+const category = categories.find((cat) => cat.data.id === blog.data.category.id)
+
+console.log(blog)
+---
+
+<MainLayout title={blog.data.title}>
+  <main class='container mx-auto px-4 py-12 max-w-4xl'>
+    <article>
+      <header class='mb-8'>
+        {
+          blog.data.image && (
+            <img
+              src={blog.data.image}
+              alt={blog.data.title}
+              class='w-full h-64 md:h-96 object-cover rounded-lg mb-6'
+            />
+          )
+        }
+        <h1 class='text-4xl md:text-5xl font-bold mb-4'>{blog.data.title}</h1>
+
+        <div class='flex flex-wrap items-center gap-4 text-gray-600 mb-6'>
+          {category && <Badge>{category.data.name}</Badge>}
+          <time datetime={blog.data.createdAt}>
+            {new Date(blog.data.publishedAt).toLocaleDateString()}
+          </time>
+        </div>
+      </header>
+
+      <div class='prose prose-lg max-w-none'>
+        {blog.body && <div set:html={blog.body} class='prose prose-lg' />}
+      </div>
+    </article>
+  </main>
+</MainLayout>

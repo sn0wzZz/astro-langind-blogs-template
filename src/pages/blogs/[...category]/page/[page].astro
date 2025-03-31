@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content'
+import Pagination from '../../../../components/ui/pagination.astro'
+import MainLayout from '../../../../layouts/main-layout.astro'
+import BlogCard from '../../../../components/blog-card.astro'
+import CategoryFilter from '../../../../components/category-filter.astro'
+import { POSTS_PER_PAGE } from '../../../../constants'
+
+export async function getStaticPaths() {
+  const allCategories = await getCollection('categories')
+  const allPosts = await getCollection('blogs')
+
+  const paths = []
+
+  for (const category of allCategories) {
+    const categorySlug = category.data.handle
+    const filteredPosts = allPosts
+      .filter((post) => post.data.category.id === category.id)
+      .sort(
+        (a, b) =>
+          new Date(b.data.publishedAt).getTime() -
+          new Date(a.data.publishedAt).getTime()
+      )
+
+    const postsPerPage = POSTS_PER_PAGE
+    const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
+
+    for (let page = 1; page <= totalPages; page++) {
+      const startIndex = (page - 1) * postsPerPage
+      const endIndex = startIndex + postsPerPage
+      const paginatedPosts = filteredPosts.slice(startIndex, endIndex)
+
+      paths.push({
+        params: {
+          category: categorySlug,
+          page: page.toString(),
+        },
+        props: {
+          category,
+          posts: paginatedPosts,
+          currentPage: page,
+          totalPages,
+        },
+      })
+    }
+  }
+
+  return paths
+}
+
+const { category, posts, currentPage, totalPages } = Astro.props
+---
+
+<MainLayout title={`${category.data.name} - Page ${currentPage} - Blog`}>
+  <main class='container mx-auto px-4 py-12'>
+    <CategoryFilter class='justify-center w-full' />
+
+    <h1 class='text-4xl font-bold mb-8'>{category.data.name}</h1>
+
+    <ul class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+      {posts.map((post) => <BlogCard {post} />)}
+    </ul>
+
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      baseUrl='/blogs'
+      categoryPath={category.data.handle}
+      pageName='category'
+    />
+  </main>
+</MainLayout>

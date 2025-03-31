@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content'
+import Card from '../../../components/ui/card.astro'
+import CardContent from '../../../components/ui/card-content.astro'
+import Pagination from '../../../components/ui/pagination.astro'
+import MainLayout from '../../../layouts/main-layout.astro'
+import BlogCard from '../../../components/blog-card.astro'
+import CategoryFilter from '../../../components/category-filter.astro'
+import { POSTS_PER_PAGE } from '../../../constants'
+
+export async function getStaticPaths() {
+  const allCategories = await getCollection('categories')
+  const allPosts = await getCollection('blogs')
+  console.log(allCategories)
+
+  return allCategories.map((category) => {
+    const categorySlug = category.data.handle
+
+    const filteredPosts = allPosts
+      .filter((post) => {
+        return post.data.category.id === category.data.id
+      })
+      .sort(
+        (a, b) =>
+          new Date(b.data.publishedAt).getTime() -
+          new Date(a.data.publishedAt).getTime()
+      )
+
+    return {
+      params: { category: categorySlug },
+      props: {
+        category,
+        posts: filteredPosts.slice(0, 9),
+        totalPosts: filteredPosts.length,
+      },
+    }
+  })
+}
+
+const { category, posts, totalPosts } = Astro.props
+const postsPerPage = POSTS_PER_PAGE
+const totalPages = Math.ceil(totalPosts / postsPerPage)
+const currentPage = 1
+---
+
+<MainLayout title={`${category.data.name} - Blog`}>
+  <main class='container mx-auto px-4 py-12'>
+    <CategoryFilter class='justify-center w-full' />
+
+    <h1 class='text-4xl font-bold mb-8'>{category.data.name}</h1>
+
+    <ul class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+      {posts.map((post) => <BlogCard {post} />)}
+    </ul>
+
+    {
+      totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl='/blogs'
+          categoryPath={category.data.handle}
+          pageName='category'
+        />
+      )
+    }
+  </main>
+</MainLayout>

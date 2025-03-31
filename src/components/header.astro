@@ -1,0 +1,101 @@
+---
+import HeaderLink from './header-link.astro'
+import Button from './ui/button.astro'
+import Logo from './logo.astro'
+import ThemeToggle from './theme-toggle.astro'
+---
+
+<header class='flex-center w-full h-15 lg:top-3 z-10 fixed'>
+  <nav
+    id='header'
+    class='container lg:mx-3 max-w-[1440px] flex justify-between items-center bg-muted/50 backdrop-blur-xl lg:rounded-full py-3 px-4 w-full relative z-50 transition-all duration-100 ease-in-out'
+  >
+    <Logo />
+    <div class='gap-4 hidden lg:flex'>
+      <HeaderLink href='/'>Home</HeaderLink>
+      <HeaderLink href='/about'>About us</HeaderLink>
+      <HeaderLink href='/blogs'>Blog</HeaderLink>
+    </div>
+    <div class='hidden lg:flex  gap-3'>
+      <ThemeToggle />
+      <Button>CTA</Button>
+    </div>
+    <Button
+      id='mobile-menu-toggle'
+      variant='ghost'
+      class='lg:hidden relative z-50'
+      aria-label='Toggle menu'
+      aria-expanded='false'
+    >
+      <div class='flex flex-col gap-1'>
+        <span
+          class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
+          id='line-1'></span>
+        <span
+          class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
+          id='line-2'></span>
+        <span
+          class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
+          id='line-3'></span>
+      </div>
+    </Button>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div
+    id='mobile-menu'
+    class='fixed inset-x-0 top-0 transform -translate-y-full transition-transform duration-300 ease-in-out bg-background w-full h-screen z-40 pt-20 px-4'
+  >
+    <div
+      class='flex flex-col space-y-6 text-lg font-medium max-w-[500px] mx-auto p-4'
+    >
+      <HeaderLink href='/'>Link 1</HeaderLink>
+      <HeaderLink href='/'>Link 2</HeaderLink>
+      <HeaderLink href='/'>Link 3</HeaderLink>
+      <Button class='mt-4'>CTA</Button>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('mobile-menu-toggle')
+    const mobileMenu = document.getElementById('mobile-menu')
+    const line1 = document.getElementById('line-1')
+    const line3 = document.getElementById('line-3')
+    const header = document.getElementById('header')
+
+    menuToggle?.addEventListener('click', () => {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true'
+
+      // Toggle aria-expanded attribute
+      menuToggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true')
+
+      // Toggle mobile menu visibility
+      if (mobileMenu) {
+        if (isExpanded) {
+          mobileMenu.classList.remove('translate-y-0')
+          mobileMenu.classList.add('-translate-y-full')
+        } else {
+          mobileMenu.classList.remove('-translate-y-full')
+          mobileMenu.classList.add('translate-y-0')
+        }
+      }
+
+      // Animate hamburger to X
+      if (line1 && line3 && header) {
+        if (isExpanded) {
+          // Reset to hamburger
+          line1.classList.remove('opacity-0')
+          line3.classList.remove('opacity-0')
+          header.classList.add('bg-muted/50', 'backdrop-blur-xl')
+        } else {
+          // Transform to X
+          line1.classList.add('opacity-0')
+          line3.classList.add('opacity-0')
+          header.classList.remove('bg-muted/50', 'backdrop-blur-xl')
+        }
+      }
+    })
+  })
+</script>

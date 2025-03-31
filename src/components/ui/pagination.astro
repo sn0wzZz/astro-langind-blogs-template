@@ -1,0 +1,95 @@
+---
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
+
+interface Props {
+  currentPage: number
+  totalPages: number
+  baseUrl: string
+  categoryPath?: string
+  pageName?: string
+}
+
+const { currentPage, totalPages, baseUrl, categoryPath, pageName } = Astro.props
+
+// Determine the correct URL structure
+let paginationBaseUrl = baseUrl
+if (pageName === 'category' && categoryPath) {
+  paginationBaseUrl = `/category/${categoryPath}`
+} else if (pageName === 'author' && categoryPath) {
+  paginationBaseUrl = `/author/${categoryPath}`
+} else if (pageName === 'tag' && categoryPath) {
+  paginationBaseUrl = `/tag/${categoryPath}`
+}
+
+function getVisiblePages() {
+  const pages = []
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(currentPage - i) <= 2) {
+      pages.push(i)
+    }
+  }
+  return pages
+}
+
+const visiblePages = getVisiblePages()
+---
+
+<nav class='flex justify-start my-12' aria-label='Pagination' role='navigation'>
+  <div class='flex items-center gap-2'>
+    <a
+      data-astro-prefetch
+      role='button'
+      aria-label='Previous page'
+      href={currentPage === 2
+        ? paginationBaseUrl
+        : `${paginationBaseUrl}/page/${currentPage - 1}`}
+      class:list={[
+        'px-3 flex-center apect-square py-2 border rounded-lg hover:bg-gray-100',
+        { 'pointer-events-none opacity-50': currentPage === 1 },
+      ]}
+    >
+      <ChevronLeftIcon size='1.25em' />
+    </a>
+
+    {
+      visiblePages.map((pageNum, i) => (
+        <>
+          {i > 0 && visiblePages[i] - visiblePages[i - 1] > 1 && (
+            <span class='px-3 flex-center apect-square'>...</span>
+          )}
+          <a
+            role='button'
+            data-astro-prefetch
+            href={
+              pageNum === 1
+                ? paginationBaseUrl
+                : `${paginationBaseUrl}/page/${pageNum}`
+            }
+            class:list={[
+              'px-3 flex-center apect-square py-1.5 border rounded-lg',
+              {
+                'bg-black text-white': currentPage === pageNum,
+                'hover:bg-gray-100': currentPage !== pageNum,
+              },
+            ]}
+          >
+            {pageNum}
+          </a>
+        </>
+      ))
+    }
+
+    <a
+      data-astro-prefetch
+      href={`${paginationBaseUrl}/page/${currentPage + 1}`}
+      role='button'
+      aria-label='Next page'
+      class:list={[
+        'px-3 flex-center apect-square py-2 border rounded-lg hover:bg-gray-100',
+        { 'pointer-events-none opacity-50': currentPage === totalPages },
+      ]}
+    >
+      <ChevronRightIcon size='1.25em' />
+    </a>
+  </div>
+</nav>

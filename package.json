@@ -1,0 +1,39 @@
+{
+  "name": "urane",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "bun run generate && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "generate": "tsx ./scripts/build.ts"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.2.2",
+    "@astrojs/react": "^4.2.2",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.3.0",
+    "@catalystic/json-to-yaml": "^1.0.0",
+    "@tailwindcss/vite": "^4.0.17",
+    "@trigani/api-client": "0.0.0-alpha.3",
+    "@types/js-beautify": "^1.14.3",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "astro": "^5.5.5",
+    "astro-seo": "^0.8.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
+    "format-duration": "^3.0.2",
+    "js-beautify": "^1.15.4",
+    "lucide-react": "^0.484.0",
+    "node-html-parser": "^7.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.17",
+    "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.19.3"
+  }
+}

@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content'
+import Pagination from '../../components/ui/pagination.astro'
+import MainLayout from '../../layouts/main-layout.astro'
+import BlogCard from '../../components/blog-card.astro'
+import CategoryFilter from '../../components/category-filter.astro'
+import { POSTS_PER_PAGE } from '../../constants'
+
+const allPosts = await getCollection('blogs')
+const sortedPosts = allPosts.sort(
+  (a, b) =>
+    new Date(b.data.publishedAt).getTime() -
+    new Date(a.data.publishedAt).getTime()
+)
+
+const postsPerPage = POSTS_PER_PAGE
+const totalPages = Math.ceil(sortedPosts.length / postsPerPage)
+const currentPage = 1
+const posts = sortedPosts.slice(0, postsPerPage)
+
+console.log(posts)
+---
+
+<MainLayout title='Blog'>
+  <main class='container mx-auto px-4 py-12'>
+    <CategoryFilter class='justify-center w-full' />
+
+    <h1 class='text-4xl font-bold mb-8'>All blogs</h1>
+
+    <ul class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+      {posts.map((post) => <BlogCard {post} />)}
+    </ul>
+
+    {
+      totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          baseUrl='/blogs'
+        />
+      )
+    }
+  </main>
+</MainLayout>

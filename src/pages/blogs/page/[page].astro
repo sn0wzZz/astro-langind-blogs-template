@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content'
+import Pagination from '../../../components/ui/pagination.astro'
+import MainLayout from '../../../layouts/main-layout.astro'
+import BlogCard from '../../../components/blog-card.astro'
+import type { GetStaticPathsOptions } from 'astro'
+import CategoryFilter from '../../../components/category-filter.astro'
+import { POSTS_PER_PAGE } from '../../../constants'
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const allPosts = await getCollection('blogs')
+
+  const postsPerPage = POSTS_PER_PAGE
+  const sortedPosts = allPosts.sort(
+    (a, b) =>
+      new Date(b.data.publishedAt).getTime() -
+      new Date(a.data.publishedAt).getTime()
+  )
+
+  return paginate(sortedPosts, { pageSize: postsPerPage })
+}
+const { page } = Astro.props
+const { data: posts, currentPage, lastPage: totalPages } = page
+---
+
+<MainLayout title={`Blog - Page ${currentPage}`}>
+  <main class='container mx-auto px-4 py-12'>
+    <CategoryFilter class='justify-center w-full' />
+
+    <h1 class='text-4xl font-bold mb-8'>All blogs</h1>
+
+    <ul class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+      {posts.map((post) => <BlogCard {post} />)}
+    </ul>
+
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      baseUrl='/blogs'
+    />
+  </main>
+</MainLayout>
