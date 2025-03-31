@@ -8,7 +8,7 @@ import ThemeToggle from './theme-toggle.astro'
 <header class='flex-center w-full h-15 lg:top-3 z-10 fixed'>
   <nav
     id='header'
-    class='container lg:mx-3 max-w-[1440px] flex justify-between items-center bg-muted/50 backdrop-blur-xl lg:rounded-full py-3 px-4 w-full relative z-50 transition-all duration-100 ease-in-out'
+    class='container lg:mx-3 max-w-[1440px] flex justify-between items-center bg-muted/50 backdrop-blur-xl lg:rounded-full py-3 px-4 w-full relative z-50 transition-all duration-100 ease-in-out overflow-hidden'
   >
     <Logo />
     <div class='gap-4 hidden lg:flex'>
@@ -16,29 +16,29 @@ import ThemeToggle from './theme-toggle.astro'
       <HeaderLink href='/about'>About us</HeaderLink>
       <HeaderLink href='/blogs'>Blog</HeaderLink>
     </div>
-    <div class='hidden lg:flex  gap-3'>
+    <div class='flex gap-3 items-center'>
       <ThemeToggle />
-      <Button>CTA</Button>
+      <Button class='hidden lg:block'>CTA</Button>
+      <Button
+        id='mobile-menu-toggle'
+        variant='ghost'
+        class='lg:hidden relative z-50'
+        aria-label='Toggle menu'
+        aria-expanded='false'
+      >
+        <div class='flex flex-col gap-1'>
+          <span
+            class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
+            id='line-1'></span>
+          <span
+            class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
+            id='line-2'></span>
+          <span
+            class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
+            id='line-3'></span>
+        </div>
+      </Button>
     </div>
-    <Button
-      id='mobile-menu-toggle'
-      variant='ghost'
-      class='lg:hidden relative z-50'
-      aria-label='Toggle menu'
-      aria-expanded='false'
-    >
-      <div class='flex flex-col gap-1'>
-        <span
-          class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
-          id='line-1'></span>
-        <span
-          class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
-          id='line-2'></span>
-        <span
-          class='w-5 h-0.5 bg-black rounded-full transition-all duration-300 ease-in-out'
-          id='line-3'></span>
-      </div>
-    </Button>
   </nav>
 
   <!-- Mobile Menu Overlay -->

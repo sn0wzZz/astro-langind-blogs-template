@@ -1,7 +1,9 @@
----
-import { cn } from '../../lib/utils'
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
 
-// Define the button variants using a function instead of cva
+import { cn } from "../../lib/utils"
+
 function buttonVariants({
   variant = 'default',
   size = 'default',
@@ -33,58 +35,33 @@ function buttonVariants({
   }
 
   const sizeStyles = {
-    default: 'h-9 px-4 py-2',
+    default: 'h-11  px-4 py-2',
     sm: 'h-8 rounded-md px-3 text-xs',
-    lg: 'h-10 rounded-md px-8',
+    lg: 'h-11 rounded-md px-4',
     icon: 'h-9 w-9',
   }
 
   return cn(baseStyles, variantStyles[variant], sizeStyles[size], className)
 }
 
-interface Props {
-  variant?:
-    | 'default'
-    | 'destructive'
-    | 'outline'
-    | 'secondary'
-    | 'ghost'
-    | 'link'
-  size?: 'default' | 'sm' | 'lg' | 'icon'
-  class?: string
-  as?: string
-  href?: string
-  type?: 'button' | 'submit' | 'reset'
-  disabled?: boolean
-  [key: string]: any // For any other HTML attributes
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
 }
 
-const {
-  variant = 'default',
-  size = 'default',
-  class: className = '',
-  as = 'button',
-  href,
-  type = 'button',
-  disabled = false,
-  ...rest
-} = Astro.props
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
 
-const Element = as
-const isLink = as === 'a' || href
-const Tag = isLink ? 'a' : Element
-
-const classes = buttonVariants({ variant, size, className })
----
-
-{
-  isLink ? (
-    <a href={href} class={classes} {...rest}>
-      <slot />
-    </a>
-  ) : (
-    <Tag type={type} class={classes} disabled={disabled} {...rest}>
-      <slot />
-    </Tag>
-  )
-}
+export { Button, buttonVariants }

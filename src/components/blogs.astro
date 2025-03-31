@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content'
+import BlogCard from './blog-card.astro'
+import Button from './ui/button.astro'
+
+interface Props {
+  title?: string
+}
+const { title= 'Полезни ресурси' } = Astro.props
+
+const blogs = await getCollection('blogs')
+---
+
+<div class='space-y-8'>
+  <div class="flex items-center justify-between">
+
+    <h6 class='headline-h5'>{title}</h6>
+    <Button href="/blogs" variant="secondary" >View all</Button>
+  </div>
+  <ul class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+    {blogs.map((post) => <BlogCard {post} />)}
+  </ul>
+</div>
