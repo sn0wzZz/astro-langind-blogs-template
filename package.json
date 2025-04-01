@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "bun run generate && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate": "tsx ./scripts/build.ts"
+    "prebuild": "tsx ./scripts/build.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.2",
