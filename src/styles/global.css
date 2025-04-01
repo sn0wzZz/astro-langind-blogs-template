@@ -113,6 +113,7 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --radius-xs: calc(var(--radius) - 16px);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -197,45 +198,73 @@
 
 /* Display */
 @utility display-main {
-  @apply text-[48px] leading-[56px] tracking-[-0.5px] font-bold md:text-[60px] md:leading-[72px] md:tracking-[-0.75px] lg:text-[72px] lg:leading-[84px] lg:tracking-[-1px];
+  @apply 
+  text-[48px] leading-[56px] tracking-[-0.5px] font-bold 
+  md:text-[60px] md:leading-[72px] md:tracking-[-0.75px] 
+  lg:text-[72px] lg:leading-[84px] lg:tracking-[-1px];
 }
 
 @utility display-sub {
-  @apply text-[40px] leading-[48px] tracking-[-0.25px] font-semibold md:text-[48px] md:leading-[60px] md:tracking-[-0.5px] lg:text-[60px] lg:leading-[72px] lg:tracking-[-0.5px];
+  @apply 
+  text-[40px] leading-[48px] tracking-[-0.25px] font-semibold 
+  md:text-[48px] md:leading-[60px] md:tracking-[-0.5px] 
+  lg:text-[60px] lg:leading-[72px] lg:tracking-[-0.5px];
 }
 
 /* Headline */
 @utility headline-h1 {
-  @apply text-[32px] leading-[40px] tracking-[-0.25px] font-bold md:text-[40px] md:leading-[52px] md:tracking-[-0.25px] lg:text-[48px] lg:leading-[60px] lg:tracking-[-0.5px];
+  @apply 
+  text-[32px] leading-[40px] tracking-[-0.25px] font-bold 
+  md:text-[40px] md:leading-[52px] md:tracking-[-0.25px] 
+  lg:text-[48px] lg:leading-[60px] lg:tracking-[-0.5px];
 }
 
 @utility headline-h2 {
-  @apply text-[28px] leading-[36px] tracking-[0px] font-bold md:text-[32px] md:leading-[44px] md:tracking-[0px] lg:text-[40px] lg:leading-[52px] lg:tracking-[-0.25px];
+  @apply 
+  text-[28px] leading-[36px] tracking-[0px] font-medium 
+  md:text-[32px] md:leading-[44px] md:tracking-[0px] 
+  lg:text-[40px] lg:leading-[52px] lg:tracking-[-0.25px];
 }
 
 @utility headline-h3 {
-  @apply text-[24px] leading-[32px] tracking-[0px] font-semibold md:text-[28px] md:leading-[36px] md:tracking-[0px] lg:text-[32px] lg:leading-[44px] lg:tracking-[0px];
+  @apply 
+  text-[24px] leading-[32px] tracking-[0px] font-semibold 
+  md:text-[28px] md:leading-[36px] md:tracking-[0px] 
+  lg:text-[32px] lg:leading-[44px] lg:tracking-[0px];
 }
 
 @utility headline-h4 {
-  @apply text-[20px] leading-[28px] tracking-[0px] font-semibold md:text-[24px] md:leading-[32px] md:tracking-[0px] lg:text-[28px] lg:leading-[36px] lg:tracking-[0px];
+  @apply 
+  text-[20px] leading-[28px] tracking-[0px] font-semibold 
+  md:text-[24px] md:leading-[32px] md:tracking-[0px] 
+  lg:text-[28px] lg:leading-[36px] lg:tracking-[0px];
 }
 
 @utility headline-h5 {
-  @apply text-[18px] leading-[26px] tracking-[0px] font-medium md:text-[20px] md:leading-[28px] md:tracking-[0px] lg:text-[24px] lg:leading-[32px] lg:tracking-[0px];
+  @apply 
+  text-[18px] leading-[26px] tracking-[0px] font-medium 
+  md:text-[20px] md:leading-[28px] md:tracking-[0px] 
+  lg:text-[24px] lg:leading-[32px] lg:tracking-[0px];
 }
 
 @utility headline-h6 {
-  @apply text-[16px] leading-[24px] tracking-[0px] font-medium md:text-[18px] md:leading-[26px] md:tracking-[0px] lg:text-[20px] lg:leading-[28px] lg:tracking-[0px];
+  @apply 
+  text-[16px] leading-[24px] tracking-[0px] font-medium 
+  md:text-[18px] md:leading-[26px] md:tracking-[0px] lg:text-[20px] 
+  lg:leading-[28px] lg:tracking-[0px];
 }
 
 /* Subhead */
 @utility subhead {
-  @apply text-[14px] leading-[20px] tracking-[0.15px] font-medium md:text-[16px] md:leading-[24px] md:tracking-[0.15px];
+  @apply 
+  text-[14px] leading-[20px] tracking-[0.15px] font-medium 
+  md:text-[16px] md:leading-[24px] md:tracking-[0.15px];
 }
 
 @utility subhead-lg {
-  @apply text-[16px] leading-[24px] tracking-[0.15px] font-medium md:text-[18px] md:leading-[28px] md:tracking-[0.15px];
+  @apply 
+  text-[16px] leading-[24px] tracking-[0.15px] font-medium 
+  md:text-[18px] md:leading-[28px] md:tracking-[0.15px];
 }
 
 /* Disclaimer */
