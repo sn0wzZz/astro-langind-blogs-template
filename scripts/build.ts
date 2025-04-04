@@ -30,7 +30,12 @@ const key = env.API_KEY as string
 // Set page size to maximum allowed (100)
 const pageSize = 100
 // Only fetch categories
-const types = ['categories', 'authors', 'blogs']
+const types = [
+  'categories',
+  'authors',
+  'blogs',
+  'pages',
+]
 
 const apiClient = new ApiClient({
   domain,
@@ -87,13 +92,11 @@ async function fetcher(type: (typeof types)[number]) {
       }-${Math.min(page * pageSize, totalItems)})`
     )
 
-
-
     try {
       const results = await space.getRows(type, {
         page,
         pageSize,
-        populate: type === 'authors' ? { avatar: true } : {image:true},
+        populate: type === 'authors' ? { avatar: true } : { image: true },
         formatOptions: { richText: 'html' },
       })
 
@@ -105,7 +108,7 @@ async function fetcher(type: (typeof types)[number]) {
       // Process each item in this page
       for (const result of results.data) {
         const { content, ...rest } = result
-        const formatted = format(rest, content)
+        const formatted = format(rest, content, type)
 
         await write(typePath, `${rest.id}.mdx`, formatted)
         allItems.push(result)
@@ -139,12 +142,26 @@ async function fetcher(type: (typeof types)[number]) {
   }
 }
 
-function format(frontmatter: Record<string, any>, content: string | undefined) {
+function format(
+  frontmatter: Record<string, any>,
+  content: string | undefined,
+  type: (typeof types)[number]
+) {
   formatImages(frontmatter)
   if (frontmatter?.slug) {
     let temporal = frontmatter.slug
     delete frontmatter.slug
     frontmatter.handle = temporal
+  }
+
+  if (
+    type === 'sections' ||
+    type === 'blocks' ||
+    type === 'pages' ||
+    type === 'meta'
+  ) {
+    delete frontmatter.id
+    frontmatter.id = frontmatter.identifier.replace('.', '-')
   }
 
   const htmlString = content
@@ -173,12 +190,10 @@ ${beautify.html_beautify(htmlString, {
 function populate(type: string) {
   switch (type) {
     case 'blogs':
-      return {image: true, author:true, category: true}
+      return { image: true, author: true, category: true }
     default:
       return {}
-    
   }
-
 }
 async function write(_path: string, name: string, result: string) {
   const filePath = path.resolve(_path, name)

@@ -4,8 +4,11 @@ import { SEO, type Props as SeoProps } from 'astro-seo'
 import { SITE_DESCRIPTION, SITE_TITLE } from '../constants'
 import Header from '../components/header.astro'
 import Footer from '../components/footer.astro'
+import { cn } from '../lib/utils'
 
-type Props = {} & SeoProps
+type Props = {
+  class?: string
+} & SeoProps
 
 const { ...seoProps } = Astro.props
 
@@ -41,7 +44,7 @@ const defaultSeo: SeoProps = {
   },
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const { class: className = '' } = Astro.props
 ---
 
 <!doctype html>
@@ -57,7 +60,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
   </head>
   <body class='relative w-full mx-auto'>
     <Header />
-    <main class='container mx-auto py-20 lg:py-32'>
+    <main class={cn('container mx-auto py-20 lg:py-32 overflow-x-hidden', className)}>
       <slot />
     </main>
     <Footer />

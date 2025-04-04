@@ -70,17 +70,18 @@ const {
   ...rest
 } = Astro.props
 
-const Element = as
 const isLink = as === 'a' || href
-const Tag = isLink ? 'a' : Element
+const Tag = as
 
 const classes = buttonVariants({ variant, size, className })
 ---
 
 {
   isLink ? (
-    <a href={href} class={classes} {...rest}>
-      <slot />
+    <a href={href}>
+      <Tag type={type} class={classes} disabled={disabled} {...rest}>
+        <slot />
+      </Tag>
     </a>
   ) : (
     <Tag type={type} class={classes} disabled={disabled} {...rest}>

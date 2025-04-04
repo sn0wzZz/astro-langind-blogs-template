@@ -136,7 +136,7 @@
     @apply rounded-lg bg-card text-card-foreground;
   }
   .container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-7xl px-2;
   }
 }
 
@@ -167,6 +167,142 @@
 }
 
 /* Utilities */
+
+/* Blog Content */
+@utility blog-content {
+  /* Headings */
+  & h1 {
+    @apply headline-h1;
+  }
+  
+  & h2 {
+    @apply headline-h2;
+  }
+  
+  & h3 {
+    @apply headline-h3;
+  }
+  
+  & h4 {
+    @apply headline-h4;
+  }
+  
+  & h5 {
+    @apply headline-h5;
+  }
+  
+  & h6 {
+    @apply headline-h6;
+  }
+  
+  /* Paragraphs */
+  & p {
+    @apply body-18-regular text-muted-foreground;
+    @apply md:body-20-regular;
+  }
+  
+  /* Lists */
+  & ul, & ol {
+    @apply mb-6 ml-6;
+  }
+  
+  & ul {
+    @apply list-disc;
+  }
+  
+  & ol {
+    @apply list-decimal;
+  }
+  
+  & li {
+    @apply body-16-regular mb-2 text-foreground/90;
+    @apply md:body-18-regular;
+    
+    & > ul, & > ol {
+      @apply mt-2 mb-0;
+    }
+  }
+  
+  /* Blockquotes */
+  & blockquote {
+    @apply pl-4 border-l-4 border-primary/70 italic  text-foreground/80;
+    @apply body-18-medium md:body-20-medium;
+  }
+  
+  /* Code blocks */
+  & pre {
+    @apply bg-secondary p-4 rounded-md overflow-x-auto ;
+  }
+  
+  & code {
+    @apply font-mono text-sm bg-secondary px-1.5 py-0.5 rounded-sm;
+  }
+  
+  & pre code {
+    @apply bg-transparent p-0 text-foreground/90;
+  }
+  
+  /* Images */
+  & img {
+    @apply rounded-lg max-w-full h-auto my-6 mx-auto;
+  }
+  
+  /* Tables */
+  & table {
+    @apply w-full border-collapse mb-6;
+  }
+  
+  & th {
+    @apply body-16-semibold text-left p-2 border-b-2 border-border;
+    @apply md:body-18-semibold;
+  }
+  
+  & td {
+    @apply body-16-regular p-2 border-b border-border/70;
+    @apply md:body-18-regular;
+  }
+  
+  /* Horizontal rule */
+  & hr {
+    @apply my-8 border-t border-border;
+  }
+  
+  /* Links */
+  & a {
+    @apply text-primary underline underline-offset-2 hover:text-primary/80 transition-colors;
+  }
+  
+  /* Spacing between consecutive elements */
+  & > * + *:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+    @apply mt-4;
+  }
+  
+  /* Figures and captions */
+  & figure {
+    @apply my-6;
+    
+    & figcaption {
+      @apply text-center body-14-regular text-foreground/70 mt-2;
+      @apply md:body-16-regular;
+    }
+  }
+  
+  /* Definition lists */
+  & dl {
+    @apply mb-6;
+  }
+  
+  & dt {
+    @apply body-16-semibold mb-1;
+    @apply md:body-18-semibold;
+  }
+  
+  & dd {
+    @apply body-16-regular mb-4 ml-4;
+    @apply md:body-18-regular;
+  }
+}
+
 @utility no-scroll {
   &::-webkit-scrollbar {
     display: none;
@@ -198,72 +334,62 @@
 
 /* Display */
 @utility display-main {
-  @apply 
-  text-[48px] leading-[56px] tracking-[-0.5px] font-bold 
+  @apply text-[48px] leading-[56px] tracking-[-0.5px] font-bold 
   md:text-[60px] md:leading-[72px] md:tracking-[-0.75px] 
   lg:text-[72px] lg:leading-[84px] lg:tracking-[-1px];
 }
 
 @utility display-sub {
-  @apply 
-  text-[40px] leading-[48px] tracking-[-0.25px] font-semibold 
+  @apply text-[40px] leading-[48px] tracking-[-0.25px] font-semibold 
   md:text-[48px] md:leading-[60px] md:tracking-[-0.5px] 
   lg:text-[60px] lg:leading-[72px] lg:tracking-[-0.5px];
 }
 
 /* Headline */
 @utility headline-h1 {
-  @apply 
-  text-[32px] leading-[40px] tracking-[-0.25px] font-bold 
+  @apply text-[32px] leading-[40px] tracking-[-0.25px] font-bold 
   md:text-[40px] md:leading-[52px] md:tracking-[-0.25px] 
   lg:text-[48px] lg:leading-[60px] lg:tracking-[-0.5px];
 }
 
 @utility headline-h2 {
-  @apply 
-  text-[28px] leading-[36px] tracking-[0px] font-medium 
+  @apply text-[28px] leading-[36px] tracking-[0px] font-medium 
   md:text-[32px] md:leading-[44px] md:tracking-[0px] 
   lg:text-[40px] lg:leading-[52px] lg:tracking-[-0.25px];
 }
 
 @utility headline-h3 {
-  @apply 
-  text-[24px] leading-[32px] tracking-[0px] font-semibold 
+  @apply text-[24px] leading-[32px] tracking-[0px] font-semibold 
   md:text-[28px] md:leading-[36px] md:tracking-[0px] 
   lg:text-[32px] lg:leading-[44px] lg:tracking-[0px];
 }
 
 @utility headline-h4 {
-  @apply 
-  text-[20px] leading-[28px] tracking-[0px] font-semibold 
+  @apply text-[20px] leading-[28px] tracking-[0px] font-semibold 
   md:text-[24px] md:leading-[32px] md:tracking-[0px] 
   lg:text-[28px] lg:leading-[36px] lg:tracking-[0px];
 }
 
 @utility headline-h5 {
-  @apply 
-  text-[18px] leading-[26px] tracking-[0px] font-medium 
+  @apply text-[18px] leading-[26px] tracking-[0px] font-medium 
   md:text-[20px] md:leading-[28px] md:tracking-[0px] 
   lg:text-[24px] lg:leading-[32px] lg:tracking-[0px];
 }
 
 @utility headline-h6 {
-  @apply 
-  text-[16px] leading-[24px] tracking-[0px] font-medium 
+  @apply text-[16px] leading-[24px] tracking-[0px] font-medium 
   md:text-[18px] md:leading-[26px] md:tracking-[0px] lg:text-[20px] 
   lg:leading-[28px] lg:tracking-[0px];
 }
 
 /* Subhead */
 @utility subhead {
-  @apply 
-  text-[14px] leading-[20px] tracking-[0.15px] font-medium 
+  @apply text-[14px] leading-[20px] tracking-[0.15px] font-medium 
   md:text-[16px] md:leading-[24px] md:tracking-[0.15px];
 }
 
 @utility subhead-lg {
-  @apply 
-  text-[16px] leading-[24px] tracking-[0.15px] font-medium 
+  @apply text-[16px] leading-[24px] tracking-[0.15px] font-medium 
   md:text-[18px] md:leading-[28px] md:tracking-[0.15px];
 }
 

@@ -1,12 +1,10 @@
 ---
 import { getCollection } from 'astro:content'
-import Card from '../../../components/ui/card.astro'
-import CardContent from '../../../components/ui/card-content.astro'
-import Pagination from '../../../components/ui/pagination.astro'
-import MainLayout from '../../../layouts/main-layout.astro'
 import BlogCard from '../../../components/blog-card.astro'
-import CategoryFilter from '../../../components/category-filter.astro'
+import Filter from '../../../components/filter.astro'
+import Pagination from '../../../components/ui/pagination.astro'
 import { POSTS_PER_PAGE } from '../../../constants'
+import MainLayout from '../../../layouts/main-layout.astro'
 
 export async function getStaticPaths() {
   const allCategories = await getCollection('categories')
@@ -45,11 +43,15 @@ const currentPage = 1
 
 <MainLayout title={`${category.data.name} - Blog`}>
   <main class='container mx-auto px-4 py-12'>
-    <CategoryFilter class='justify-center w-full' />
+    <Filter
+      pageName='blogs'
+      handleName='categories'
+      class='justify-center w-full'
+    />
 
     <h1 class='text-4xl font-bold mb-8'>{category.data.name}</h1>
 
-    <ul class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+    <ul class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-16'>
       {posts.map((post) => <BlogCard {post} />)}
     </ul>
 

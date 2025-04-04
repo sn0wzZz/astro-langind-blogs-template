@@ -5,13 +5,27 @@ import { cn } from '../lib/utils'
 
 interface Props {
   class?: string
+  handleName: 'categories' | 'fields'
+  pageName: string
+  allLabel?: string
 }
 
+const {
+  class: className = '',
+  pageName,
+  handleName,
+  allLabel = 'All',
+} = Astro.props
 const currentPath = Astro.url.pathname
-const isAllActive =
-  currentPath === '/blogs' || currentPath.startsWith('/blogs/page/')
+const normalizedCurrentPath = currentPath.endsWith('/')
+  ? currentPath.slice(0, -1)
+  : currentPath
 
-const categories = await getCollection('categories')
+const isAllActive =
+  normalizedCurrentPath === `/${pageName}` ||
+  normalizedCurrentPath.startsWith(`/${pageName}/page/`) ||
+  normalizedCurrentPath === `/${pageName}/`
+const categories = await getCollection(handleName)
 
 const sortedCategories = categories.sort((a, b) =>
   a.data.name.localeCompare(b.data.name)
@@ -20,30 +34,28 @@ const sortedCategories = categories.sort((a, b) =>
 const allCategories = [
   {
     data: {
-      name: 'All',
+      name: allLabel,
       handle: 'all',
     },
     isActive: isAllActive,
   },
   ...sortedCategories.map((category) => ({
     data: category.data,
-    isActive: currentPath.includes(`/blogs/${category.data.handle}`),
+    isActive: currentPath.includes(`/${pageName}/${category.data.handle}`),
   })),
 ]
-
-const { class: className = '' } = Astro.props
 ---
 
 <div class={cn('flex flex-wrap gap-2 mb-8', className)}>
   {
     allCategories.map((category) => (
       <Button
-        variant={category.isActive ? 'default' : 'outline'}
+        variant={category.isActive ? 'default' : 'secondary'}
         size='sm'
         href={
           category.data.handle === 'all'
-            ? '/blogs'
-            : `/blogs/${category.data.handle}`
+            ? `/${pageName}`
+            : `/${pageName}/${category.data.handle}`
         }
       >
         {category.data.name}

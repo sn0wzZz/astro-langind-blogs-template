@@ -5,6 +5,7 @@ import Button from './ui/button.astro'
 import CardContent from './ui/card/card-content.astro'
 import Card from './ui/card/card.astro'
 import { getCollection } from 'astro:content'
+import { Image } from 'astro:assets'
 
 interface Props {
   post: CollectionEntry<'blogs'>
@@ -24,10 +25,14 @@ const category = (
   <a href={`/blogs/${category?.handle}/${post.data.handle}`}>
     {
       post.data.image && (
-        <img
+        <Image
           src={post.data.image}
           alt={post.data.title}
-          class='w-full h-[260px] object-cover rounded-lg'
+          width={600}
+          height={400}
+          decoding='async'
+          loading='lazy'
+          class='w-full h-64 md:h-96 object-cover rounded-lg mb-6'
         />
       )
     }

@@ -1,5 +1,6 @@
 ---
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
+import Button from './button.astro'
 
 interface Props {
   currentPage: number
@@ -36,20 +37,22 @@ const visiblePages = getVisiblePages()
 
 <nav class='flex justify-start my-12' aria-label='Pagination' role='navigation'>
   <div class='flex items-center gap-2'>
-    <a
+    <Button
       data-astro-prefetch
       role='button'
+      variant='secondary'
+      size='sm'
       aria-label='Previous page'
       href={currentPage === 2
         ? paginationBaseUrl
         : `${paginationBaseUrl}/page/${currentPage - 1}`}
       class:list={[
-        'px-3 flex-center apect-square py-2 border rounded-lg hover:bg-gray-100',
+        '',
         { 'pointer-events-none opacity-50': currentPage === 1 },
       ]}
     >
       <ChevronLeftIcon size='1.25em' />
-    </a>
+    </Button>
 
     {
       visiblePages.map((pageNum, i) => (
@@ -57,9 +60,10 @@ const visiblePages = getVisiblePages()
           {i > 0 && visiblePages[i] - visiblePages[i - 1] > 1 && (
             <span class='px-3 flex-center apect-square'>...</span>
           )}
-          <a
+          <Button
             role='button'
             data-astro-prefetch
+            size='sm'
             href={
               pageNum === 1
                 ? paginationBaseUrl
@@ -68,28 +72,30 @@ const visiblePages = getVisiblePages()
             class:list={[
               'px-3 flex-center apect-square py-1.5 border rounded-lg',
               {
-                'bg-black text-white': currentPage === pageNum,
-                'hover:bg-gray-100': currentPage !== pageNum,
+                'bg-primary text-white': currentPage === pageNum,
+                'hover:bg-muted': currentPage !== pageNum,
               },
             ]}
           >
             {pageNum}
-          </a>
+          </Button>
         </>
       ))
     }
 
-    <a
+    <Button
       data-astro-prefetch
       href={`${paginationBaseUrl}/page/${currentPage + 1}`}
       role='button'
+      variant='secondary'
+      size='sm'
       aria-label='Next page'
       class:list={[
-        'px-3 flex-center apect-square py-2 border rounded-lg hover:bg-gray-100',
+        '',
         { 'pointer-events-none opacity-50': currentPage === totalPages },
       ]}
     >
       <ChevronRightIcon size='1.25em' />
-    </a>
+    </Button>
   </div>
 </nav>
