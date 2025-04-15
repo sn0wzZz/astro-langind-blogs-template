@@ -19,6 +19,7 @@
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/vite": "^4.0.17",
+    "@tanstack/react-form": "^1.2.4",
     "@trigani/api-client": "0.0.0-alpha.3",
     "@types/js-beautify": "^1.14.3",
     "@types/react": "^19.0.12",

@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content'
 import MainLayout from '../../../layouts/main-layout.astro'
 import Badge from '../../../components/ui/badge.astro'
 import { SITE_TWITTER } from '../../../constants'
+import { Image } from 'astro:assets'
 
 export async function getStaticPaths() {
   const blogs = await getCollection('blogs')
@@ -86,9 +87,13 @@ console.log(blog)
       <header class='mb-8'>
         {
           blog.data.image && (
-            <img
+            <Image
               src={blog.data.image}
               alt={blog.data.title}
+              width={600}
+              height={400}
+              decoding='async'
+              loading='lazy'
               class='w-full h-64 md:h-96 object-cover rounded-lg mb-6'
             />
           )
